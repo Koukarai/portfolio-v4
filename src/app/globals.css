@@ -1,26 +1,69 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+:root,
+.dark {
+  --background: #0a0a0a;
+  --foreground: #f2f2f0;
+  --muted: #8a8a86;
+  --accent: #c9ff3c;
+  --border: rgba(242, 242, 240, 0.12);
+}
+
+.light {
+  --background: #f2f2f0;
+  --foreground: #0a0a0a;
+  --muted: #6b6b67;
+  --accent: #189d4f;
+  --border: rgba(10, 10, 10, 0.1);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-slow {
+  animation: marquee 45s linear infinite;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--background);
+}
+
+.dark [data-logo="black"] {
+  display: none;
+}
+
+.light [data-logo="white"] {
+  display: none;
 }
