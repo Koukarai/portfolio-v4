@@ -1,38 +1,63 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { site } from "@/data/content";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+type Status = "idle" | "submitting" | "sent" | "error";
 
 export default function ContactForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     if (!name.trim() || !email.trim() || !message.trim()) {
       setError("Please fill in every field.");
-      setSent(false);
+      setStatus("error");
       return;
     }
 
     if (!EMAIL_PATTERN.test(email.trim())) {
       setError("Please enter a valid email address.");
-      setSent(false);
+      setStatus("error");
       return;
     }
 
     setError("");
+    setStatus("submitting");
 
-    const subject = encodeURIComponent(`Project inquiry from ${name.trim()}`);
-    const body = encodeURIComponent(`${message.trim()}\n\n— ${name.trim()} (${email.trim()})`);
-    window.location.href = `mailto:${site.email}?subject=${subject}&body=${body}`;
-    setSent(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          message: message.trim(),
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Something went wrong. Please try again.");
+        setStatus("error");
+        return;
+      }
+
+      setStatus("sent");
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch {
+      setError("Something went wrong. Please try again.");
+      setStatus("error");
+    }
   }
 
   return (
@@ -92,18 +117,19 @@ export default function ContactForm() {
         />
       </div>
 
-      {error && <p className="text-sm text-red-500">{error}</p>}
-      {sent && !error && (
+      {status === "error" && <p className="text-sm text-red-500">{error}</p>}
+      {status === "sent" && (
         <p className="text-sm text-accent">
-          Opening your email client to send this along…
+          Message sent — I&apos;ll get back to you soon.
         </p>
       )}
 
       <button
         type="submit"
-        className="group mt-2 inline-flex w-fit items-center gap-3 rounded-full border border-border px-6 py-3 font-mono text-xs tracking-widest transition-colors hover:border-accent hover:text-accent"
+        disabled={status === "submitting"}
+        className="group mt-2 inline-flex w-fit items-center gap-3 rounded-full border border-border px-6 py-3 font-mono text-xs tracking-widest transition-colors hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-50"
       >
-        SEND MESSAGE
+        {status === "submitting" ? "SENDING…" : "SEND MESSAGE"}
         <span className="transition-transform group-hover:translate-x-1">
           →
         </span>
