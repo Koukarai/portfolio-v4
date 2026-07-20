@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Service } from "@/data/content";
 
 export default function ServiceCard({ service }: { service: Service }) {
@@ -23,7 +24,8 @@ export default function ServiceCard({ service }: { service: Service }) {
             <span key={tag}>{tag}</span>
           ))}
         </div>
-        <span
+        <Link
+          href="/contact"
           className={`font-mono text-sm text-accent transition-transform duration-300 ${
             hovered
               ? service.direction === "left"
@@ -33,7 +35,7 @@ export default function ServiceCard({ service }: { service: Service }) {
           }`}
         >
           {service.direction === "left" ? `${arrow} click me` : `click me ${arrow}`}
-        </span>
+        </Link>
       </div>
     </div>
   );
