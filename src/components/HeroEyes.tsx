@@ -1,5 +1,6 @@
 "use client";
 
+import { useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 /**
@@ -31,8 +32,13 @@ const SATURATION_PX = 520;
 export default function HeroEyes() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [offsets, setOffsets] = useState(() => SOCKETS.map(() => ({ x: 0, y: 0 })));
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
+    // Never subscribe when motion is unwanted; the render below pins the
+    // pupils centred, so there is no stale offset left behind either.
+    if (shouldReduceMotion) return;
+
     function handleMove(e: MouseEvent) {
       const el = containerRef.current;
       if (!el) return;
@@ -64,22 +70,25 @@ export default function HeroEyes() {
 
     window.addEventListener("mousemove", handleMove);
     return () => window.removeEventListener("mousemove", handleMove);
-  }, []);
+  }, [shouldReduceMotion]);
 
   return (
     <div ref={containerRef} className="pointer-events-none absolute inset-0">
-      {SOCKETS.map((s, i) => (
-        <span
-          key={s.xPct}
-          className="absolute block aspect-square rounded-full bg-[#141013] transition-transform duration-150 ease-out"
-          style={{
-            left: `${s.xPct}%`,
-            top: `${s.yPct}%`,
-            width: `${PUPIL_PCT}%`,
-            transform: `translate(-50%, -50%) translate(${offsets[i].x}px, ${offsets[i].y}px)`,
-          }}
-        />
-      ))}
+      {SOCKETS.map((s, i) => {
+        const { x, y } = shouldReduceMotion ? { x: 0, y: 0 } : offsets[i];
+        return (
+          <span
+            key={s.xPct}
+            className="absolute block aspect-square rounded-full bg-[#141013] transition-transform duration-150 ease-out"
+            style={{
+              left: `${s.xPct}%`,
+              top: `${s.yPct}%`,
+              width: `${PUPIL_PCT}%`,
+              transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`,
+            }}
+          />
+        );
+      })}
     </div>
   );
 }

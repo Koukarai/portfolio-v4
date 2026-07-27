@@ -55,6 +55,31 @@ body {
   animation: marquee 45s linear infinite;
 }
 
+/*
+ * Honour the OS-level "reduce motion" setting. This covers CSS only; the
+ * Framer Motion animations are handled by MotionConfig in MotionProvider.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* Perpetual motion is the worst offender, so park it at its start rather
+     than letting the blanket rule below snap it to its end frame. */
+  .animate-marquee-slow {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 ::selection {
   background: var(--accent);
   color: var(--background);

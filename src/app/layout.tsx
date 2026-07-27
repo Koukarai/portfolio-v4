@@ -2,6 +2,7 @@ import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Footer from "@/components/Footer";
+import MotionProvider from "@/components/MotionProvider";
 import Nav from "@/components/Nav";
 import ThemeProvider from "@/components/ThemeProvider";
 import { site } from "@/data/content";
@@ -52,9 +53,11 @@ export default function RootLayout({
     >
       <body className="flex min-h-screen flex-col bg-background text-foreground antialiased">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-          <Nav />
-          <main className="flex flex-1 flex-col">{children}</main>
-          <Footer />
+          <MotionProvider>
+            <Nav />
+            <main className="flex flex-1 flex-col">{children}</main>
+            <Footer />
+          </MotionProvider>
         </ThemeProvider>
         <Analytics />
       </body>

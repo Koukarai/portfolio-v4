@@ -1,18 +1,27 @@
 "use client";
 
-import { animate, motion } from "framer-motion";
-
-function handleScrollClick() {
-  const from = window.scrollY;
-  const to = from + window.innerHeight;
-  animate(from, to, {
-    duration: 1.1,
-    ease: [0.22, 1, 0.36, 1],
-    onUpdate: (latest) => window.scrollTo(0, latest),
-  });
-}
+import { animate, motion, useReducedMotion } from "framer-motion";
 
 export default function ScrollCue() {
+  // MotionConfig covers the arrow below, but not this imperative scroll.
+  const shouldReduceMotion = useReducedMotion();
+
+  function handleScrollClick() {
+    const from = window.scrollY;
+    const to = from + window.innerHeight;
+
+    if (shouldReduceMotion) {
+      window.scrollTo(0, to);
+      return;
+    }
+
+    animate(from, to, {
+      duration: 1.1,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (latest) => window.scrollTo(0, latest),
+    });
+  }
+
   return (
     <button
       type="button"
