@@ -29,7 +29,8 @@ export const metadata: Metadata = {
   // override the generated one.
   openGraph: {
     type: "website",
-    locale: "en_GB",
+    locale: "en_NG",
+    alternateLocale: ["en_US"],
     url: site.url,
     siteName: "Terrence",
   },
