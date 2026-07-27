@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
-import { projects } from "@/data/content";
+import { projects, site } from "@/data/content";
 
-const BASE_URL = "https://terrence-builds.vercel.app";
+const BASE_URL = site.url;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [

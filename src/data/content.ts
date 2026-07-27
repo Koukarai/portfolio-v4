@@ -7,6 +7,8 @@ export const navLinks = [
 
 export const site = {
   name: "Terrence",
+  /** Canonical origin. Used by metadata, the sitemap and robots.txt. */
+  url: "https://terrence-builds.vercel.app",
   status: "OPEN TO WORK",
   aboutLead:
     "I design and develop digital experiences with a focus on craft, motion, and interaction — creating interfaces where every detail is intentional.",

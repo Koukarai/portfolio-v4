@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
 import ThemeProvider from "@/components/ThemeProvider";
+import { site } from "@/data/content";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,9 +18,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://terrence-builds.vercel.app"),
+  metadataBase: new URL(site.url),
   title: "Terrence | Creative Frontend Developer",
   description: "Portfolio of Terrence — design and development.",
+  // og:title, og:description and og:image are filled in automatically — the
+  // first two from the fields above, the image from app/opengraph-image.tsx.
+  // Only the fields Next cannot infer are set here; declaring `images` would
+  // override the generated one.
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    url: site.url,
+    siteName: "Terrence",
+  },
   icons: {
     icon: "/icon-black-square.png",
     shortcut: "/icon-black-square.png",
