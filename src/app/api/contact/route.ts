@@ -4,6 +4,13 @@ import { site } from "@/data/content";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const MAX_NAME_LENGTH = 100;
+/** Longest address RFC 5321 allows. */
+const MAX_EMAIL_LENGTH = 254;
+const MAX_MESSAGE_LENGTH = 5000;
+/** Generous next to the field caps above, but stops multi-MB payloads. */
+const MAX_BODY_BYTES = 32 * 1024;
+
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX = 5;
 /** Stop the map growing without bound if a lot of distinct IPs hit the form. */
@@ -65,6 +72,11 @@ export async function POST(request: Request) {
     );
   }
 
+  const declaredSize = Number(request.headers.get("content-length") ?? 0);
+  if (declaredSize > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "Message is too long." }, { status: 413 });
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -72,7 +84,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { name, email, message } = (body ?? {}) as Record<string, unknown>;
+  const { name, email, message, website } = (body ?? {}) as Record<
+    string,
+    unknown
+  >;
+
+  // Honeypot: hidden from real users, so anything in it is a bot. Report
+  // success rather than an error, otherwise the bot learns to skip the field.
+  if (typeof website === "string" && website.trim()) {
+    return NextResponse.json({ ok: true });
+  }
 
   if (
     typeof name !== "string" ||
@@ -83,6 +104,17 @@ export async function POST(request: Request) {
     !message.trim()
   ) {
     return NextResponse.json({ error: "Please fill in every field." }, { status: 400 });
+  }
+
+  if (
+    name.trim().length > MAX_NAME_LENGTH ||
+    email.trim().length > MAX_EMAIL_LENGTH ||
+    message.trim().length > MAX_MESSAGE_LENGTH
+  ) {
+    return NextResponse.json(
+      { error: "One of those fields is too long. Please shorten it." },
+      { status: 400 },
+    );
   }
 
   if (!EMAIL_PATTERN.test(email.trim())) {
