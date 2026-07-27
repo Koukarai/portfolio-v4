@@ -37,7 +37,7 @@ export const footer = {
 };
 
 export const about = {
-  headshot: "/images/headshot.png",
+  headshot: "/images/headshot.webp",
   story: [
     "I got into tech from an unusual angle. I started out designing marketing collateral and managing property listings for a real estate group, then spent years as a database administrator, optimizing queries, securing patient records, and building the internal dashboards that kept operations running.",
     "Somewhere in that work I realized I wanted to build the whole system, not just the data layer underneath it. So I taught myself modern frontend engineering and started shipping complete platforms end-to-end: the interface, the auth, the payments, and the admin tools behind the scenes.",
