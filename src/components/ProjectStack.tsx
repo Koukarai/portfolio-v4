@@ -46,6 +46,7 @@ function StackCard({
             src={project.image}
             alt={project.title}
             fill
+            sizes="(min-width: 640px) 50vw, 100vw"
             className="object-cover"
           />
         </div>

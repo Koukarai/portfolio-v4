@@ -85,6 +85,7 @@ export default async function ProjectPage({
             alt={project.title}
             fill
             priority
+            sizes="(min-width: 1280px) calc(100vw - 12rem), (min-width: 1024px) calc(100vw - 8rem), (min-width: 640px) calc(100vw - 5rem), calc(100vw - 3rem)"
             className="object-cover"
           />
         </div>

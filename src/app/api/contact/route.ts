@@ -4,7 +4,67 @@ import { site } from "@/data/content";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT_MAX = 5;
+/** Stop the map growing without bound if a lot of distinct IPs hit the form. */
+const RATE_LIMIT_MAX_KEYS = 5000;
+
+/**
+ * In-memory sliding window, keyed by client IP. Note this is per server
+ * instance and resets on cold start, so it throttles casual abuse rather than
+ * a distributed attack. Move to a shared store (Vercel KV / Upstash) if this
+ * ever needs to be a real guarantee.
+ */
+const requestLog = new Map<string, number[]>();
+
+function getClientIp(request: Request) {
+  // Next removed `request.ip` in v15, so read the proxy headers directly.
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0]!.trim();
+  return request.headers.get("x-real-ip")?.trim() || "unknown";
+}
+
+function pruneStaleEntries(now: number) {
+  for (const [key, timestamps] of requestLog) {
+    if (timestamps.every((t) => now - t >= RATE_LIMIT_WINDOW_MS)) {
+      requestLog.delete(key);
+    }
+  }
+}
+
+function checkRateLimit(ip: string) {
+  const now = Date.now();
+
+  if (requestLog.size > RATE_LIMIT_MAX_KEYS) pruneStaleEntries(now);
+
+  const recent = (requestLog.get(ip) ?? []).filter(
+    (t) => now - t < RATE_LIMIT_WINDOW_MS,
+  );
+
+  if (recent.length >= RATE_LIMIT_MAX) {
+    const oldest = recent[0]!;
+    const retryAfter = Math.max(
+      1,
+      Math.ceil((RATE_LIMIT_WINDOW_MS - (now - oldest)) / 1000),
+    );
+    requestLog.set(ip, recent);
+    return { allowed: false as const, retryAfter };
+  }
+
+  recent.push(now);
+  requestLog.set(ip, recent);
+  return { allowed: true as const };
+}
+
 export async function POST(request: Request) {
+  const limit = checkRateLimit(getClientIp(request));
+  if (!limit.allowed) {
+    return NextResponse.json(
+      { error: "Too many messages sent. Please try again later." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfter) } },
+    );
+  }
+
   let body: unknown;
   try {
     body = await request.json();

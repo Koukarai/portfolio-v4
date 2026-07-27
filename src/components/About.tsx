@@ -52,6 +52,7 @@ export default function About() {
               src={about.headshot}
               alt={site.name}
               fill
+              sizes="320px"
               className="object-cover"
             />
           </div>
