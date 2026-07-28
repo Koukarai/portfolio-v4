@@ -80,8 +80,8 @@ export type StudySection = {
 };
 
 /**
- * The optional deep dive. Only projects with something worth explaining carry
- * one; the concept pieces are better served by their images and stay shallow.
+ * The optional deep dive. Only projects with decisions worth explaining carry
+ * a narrative; the rest can take the meta rail alone and let the gallery talk.
  * Every field is optional so a half-written study renders as far as it goes
  * instead of shipping a placeholder.
  */
@@ -259,7 +259,7 @@ export const projects: Project[] = [
     year: "2026",
     title: "HIGHEND ESCAPES",
     description:
-      "A concept travel site built to see how far motion design alone can carry a luxury brand. Twelve destinations and no backend at all.",
+      "The website for a luxury travel company, built so that browsing feels like the thing it sells. Twelve destinations and no backend at all.",
     image: "/images/case-studies/highend-escapes-hero.webp",
     gallery: [
       "/images/case-studies/highend-escapes-hero.webp",
@@ -269,15 +269,39 @@ export const projects: Project[] = [
     ],
     liveUrl: "https://www.bookhighendescapes.com/",
     tools: ["REACT", "VITE", "FRAMER MOTION", "REACT ROUTER"],
-    // Rail only, no narrative. It's a self-directed craft piece; the gallery is
-    // the argument, and a process write-up would be padding.
     study: {
-      role: "Personal project, design and build",
+      role: "Commissioned, design and build",
       timeline: "Two weeks, February 2026",
       status: "Live at bookhighendescapes.com",
+      problem: [
+        "Highend Escapes didn't need a booking engine. They needed enquiries. A trip at this price gets arranged in a conversation, and the site exists to make somebody want to start one.",
+      ],
+      sections: [
+        {
+          heading: "Knowing what not to build",
+          body: [
+            "That brief makes this a much smaller build than it looks, and recognising it early is most of the job. No accounts, no availability, no payments, no database, no admin. Twelve destinations, a way to ask about them, and everything else spent on how the whole thing feels.",
+            "It would have been easy to talk the client into more. A booking flow demos well and it would have looked better in my portfolio. It also would have been something they had to run, secure and pay for, in exchange for a checkout their customers were never going to use.",
+          ],
+        },
+        {
+          heading: "Motion doing the persuading",
+          body: [
+            "With no functionality to lean on, the whole argument is presentation. Framer Motion carries the page transitions and the scroll work across five routes, and every destination gets three images instead of one so a place has room to read as somewhere rather than a thumbnail.",
+            "The piece nobody notices is the scroll reset. Page transitions in a single page app drop you halfway down the next screen unless you handle it, so there's an eleven line component that returns every route change to the top. Nothing about it is clever and the site would feel broken without it.",
+          ],
+        },
+        {
+          heading: "One form, doing all the work",
+          body: [
+            "Everything funnels into the enquiry. Budget and trip length are sliders rather than number fields, so setting them reads as planning a trip instead of filling in an application, and the budget is framed per person because that's how the client quotes. Phone numbers take an international input, since nobody booking Santorini is guaranteed to be dialling from one country.",
+            "It posts to a form relay instead of a server I'd have to keep alive. For a company that wants an email when someone is interested, a database would have been one more thing to maintain in exchange for nothing.",
+          ],
+        },
+      ],
     },
     caseStudy:
-      "Highend Escapes is a concept, not a client project. I wanted to know how much of an expensive feeling comes from motion on its own, with no brand or budget behind it, so I built the front end of a luxury travel site in React and let Framer Motion carry the page transitions and the scroll work. It runs across five routes: a hero carousel on the home page, twelve destinations from the Maldives to the Amalfi Coast, an experience page, an enquiry form and a page for guests to leave a review. The enquiry form has a budget slider, a trip length slider and international phone input, and it relays to email rather than to a database. There's no payment step and no backend. It's a front end exercise and it doesn't pretend otherwise.",
+      "Highend Escapes commissioned me to build their website. They sell expensive travel, so the browsing had to feel like the thing it was selling, and most of that weight ends up on motion. I built it in React and let Framer Motion carry the page transitions and the scroll work. It runs across five routes: a hero carousel on the home page, twelve destinations from the Maldives to the Amalfi Coast, an experience page, an enquiry form and a page for guests to leave a review. The enquiry form has a budget slider, a trip length slider and international phone input, and it relays to email rather than to a database. There's no payment step and no backend, because a trip at this price gets arranged over a conversation. The site's job is to start one.",
   },
 ];
 
