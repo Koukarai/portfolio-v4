@@ -10,7 +10,7 @@ export default function AboutTeaser() {
       <SectionHeading index="01" title="ABOUT" />
       <Reveal>
         <p className="max-w-3xl text-2xl leading-relaxed sm:text-4xl">
-          {site.aboutLead}
+          {site.aboutTeaser}
         </p>
       </Reveal>
       <MaskReveal delay={0.1} className="mt-8">

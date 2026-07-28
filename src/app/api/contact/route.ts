@@ -140,7 +140,7 @@ export async function POST(request: Request) {
     to: site.email,
     replyTo: email.trim(),
     subject: `Project inquiry from ${name.trim()}`,
-    text: `${message.trim()}\n\n— ${name.trim()} (${email.trim()})`,
+    text: `${message.trim()}\n\nFrom: ${name.trim()} (${email.trim()})`,
   });
 
   if (error) {

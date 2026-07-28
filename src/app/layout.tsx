@@ -22,8 +22,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: "Terrence | Creative Frontend Developer",
   description:
-    "I build web products from the interface all the way down to the auth, payments and admin tools behind them.",
-  // og:title, og:description and og:image are filled in automatically — the
+    "I build websites and apps, including the auth, payments and admin tools behind them.",
+  // og:title, og:description and og:image are filled in automatically. The
   // first two from the fields above, the image from app/opengraph-image.tsx.
   // Only the fields Next cannot infer are set here; declaring `images` would
   // override the generated one.

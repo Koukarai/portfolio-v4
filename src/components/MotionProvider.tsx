@@ -9,7 +9,7 @@ import { ReactNode } from "react";
  * while still allowing opacity, so content fades in rather than flying about.
  *
  * This only reaches declarative `motion` components. Imperative `animate()`
- * calls and CSS keyframes are handled separately — see ScrollCue, HeroEyes,
+ * calls and CSS keyframes are handled separately. See ScrollCue, HeroEyes,
  * and the media query in globals.css.
  */
 export default function MotionProvider({ children }: { children: ReactNode }) {

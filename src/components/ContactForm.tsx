@@ -150,7 +150,7 @@ export default function ContactForm() {
       {status === "error" && <p className="text-sm text-red-500">{error}</p>}
       {status === "sent" && (
         <p className="text-sm text-accent">
-          Message sent — I&apos;ll get back to you soon.
+          Message sent. I&apos;ll get back to you soon.
         </p>
       )}
 

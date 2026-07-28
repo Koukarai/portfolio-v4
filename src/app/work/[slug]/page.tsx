@@ -34,6 +34,23 @@ export default async function ProjectPage({
   const prev = projects[(index - 1 + projects.length) % projects.length];
   const next = projects[(index + 1) % projects.length];
 
+  const study = project.study;
+  // Only the terms this project actually filled in, so a partial study never
+  // renders an empty definition.
+  const meta: [string, string][] = (
+    [
+      ["ROLE", study?.role],
+      ["TIMELINE", study?.timeline],
+      ["STATUS", study?.status],
+    ] as [string, string | undefined][]
+  ).filter((entry): entry is [string, string] => Boolean(entry[1]));
+
+  // A study may carry only the meta rail. Without this the narrative wrapper
+  // would still render as an empty spacer above the prev/next nav.
+  const hasNarrative = Boolean(
+    study?.problem?.length || study?.sections?.length,
+  );
+
   return (
     <section className="px-6 py-24 sm:px-10 lg:px-16 xl:px-24">
       <Reveal>
@@ -75,6 +92,21 @@ export default async function ProjectPage({
               ↗
             </span>
           </a>
+        </Reveal>
+      )}
+
+      {meta.length > 0 && (
+        <Reveal delay={0.14}>
+          <dl className="mt-10 flex flex-wrap gap-x-12 gap-y-6 border-y border-border py-6">
+            {meta.map(([term, value]) => (
+              <div key={term} className="flex flex-col gap-1.5">
+                <dt className="font-mono text-xs tracking-widest text-muted">
+                  {term}
+                </dt>
+                <dd className="text-sm font-medium">{value}</dd>
+              </div>
+            ))}
+          </dl>
         </Reveal>
       )}
 
@@ -121,6 +153,39 @@ export default async function ProjectPage({
         title={project.title}
         aspect={project.galleryAspect}
       />
+
+      {study && hasNarrative && (
+        <div className="mt-24 max-w-2xl">
+          {study.problem && study.problem.length > 0 && (
+            <Reveal>
+              <div className="flex flex-col gap-5">
+                {study.problem.map((paragraph) => (
+                  <p key={paragraph} className="text-lg leading-relaxed">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </Reveal>
+          )}
+
+          {study.sections?.map((section) => (
+            <Reveal key={section.heading}>
+              <section className="mt-16">
+                <h2 className="text-2xl font-medium tracking-tight">
+                  {section.heading}
+                </h2>
+                <div className="mt-5 flex flex-col gap-5">
+                  {section.body.map((paragraph) => (
+                    <p key={paragraph} className="leading-relaxed text-muted">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              </section>
+            </Reveal>
+          ))}
+        </div>
+      )}
 
       <div className="mt-24 flex flex-col justify-between gap-6 border-t border-border pt-8 sm:flex-row">
         <Link href={`/work/${prev.slug}`} className="group flex flex-col gap-1">

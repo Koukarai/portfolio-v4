@@ -11,7 +11,7 @@ const sections = [
   },
   {
     heading: "Information I Collect",
-    body: "If you use the contact form, the name, email address, and message you submit are sent directly to my personal email via your own email client — nothing is stored on a server or in a database. Standard hosting logs (e.g. IP address, browser type, pages visited) may be collected automatically by the hosting provider for security and performance monitoring.",
+    body: "If you use the contact form, the name, email address, and message you submit are sent straight to my personal email. Nothing is stored on a server or in a database. Standard hosting logs (IP address, browser type, pages visited) may be collected automatically by the hosting provider for security and performance monitoring.",
   },
   {
     heading: "Cookies",
@@ -19,7 +19,7 @@ const sections = [
   },
   {
     heading: "Third-Party Links",
-    body: "This site links out to third-party platforms such as GitHub, LinkedIn, and Instagram. Those platforms have their own privacy policies, and I encourage you to review them — I'm not responsible for how they handle your data.",
+    body: "This site links out to other platforms such as GitHub, LinkedIn, and Instagram. Those platforms have their own privacy policies and I'd encourage you to read them. I'm not responsible for how they handle your data.",
   },
   {
     heading: "Data Retention",
