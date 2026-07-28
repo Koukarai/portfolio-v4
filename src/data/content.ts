@@ -52,8 +52,18 @@ export const about = {
     "At some point I got tired of only owning the data layer. I wanted to build the thing sitting on top of it too, so I taught myself frontend and kept going until I could ship a whole product on my own. Interface, auth, payments, the admin screens nobody sees.",
   ],
   workingStyle:
-    "I work alone and I work slowly on purpose. I'd rather spend an extra week on auth and the edge cases than hand something over that demos well and then breaks the first time two people use it at once.",
+    "On everything I've shipped so far I've been the only engineer, and I work slowly on purpose. I'd rather spend an extra week on auth and the edge cases than hand something over that demos well and then breaks the first time two people use it at once.",
   experience: [
+    {
+      role: "Co-founder and CTO",
+      org: "AZAP",
+      period: "APR 2026 — PRESENT",
+    },
+    {
+      role: "Independent Developer",
+      org: "Box 55, Highend Escapes",
+      period: "FEB 2026 — PRESENT",
+    },
     {
       role: "Database Administrator",
       org: "International Hearing Center Nigeria",
@@ -93,6 +103,12 @@ export type Study = {
   sections?: StudySection[];
 };
 
+export type GalleryImage = {
+  src: string;
+  /** What the screen actually shows. Don't repeat the project title here. */
+  alt: string;
+};
+
 export type Project = {
   slug: string;
   index: string;
@@ -101,9 +117,16 @@ export type Project = {
   title: string;
   description: string;
   image: string;
-  gallery: string[];
+  gallery: GalleryImage[];
   galleryAspect?: string;
+  /**
+   * Draws a device bezel around each gallery image. Only for raw screenshots;
+   * anything with a frame already baked in would come out double framed.
+   */
+  galleryFrame?: "phone";
   liveUrl?: string;
+  /** Defaults to "VISIT LIVE SITE". Override where that would overstate it. */
+  liveLabel?: string;
   tools: string[];
   caseStudy: string;
   study?: Study;
@@ -120,10 +143,19 @@ export const projects: Project[] = [
       "A booking site for a shortlet operator in Enugu. Guests see live availability and book instantly, and staff run everything else from the dashboard behind it.",
     image: "/images/case-studies/box55-hero.webp",
     gallery: [
-      "/images/case-studies/box55-hero.webp",
-      "/images/case-studies/box55-dashboard.webp",
-      "/images/case-studies/box55-active-listings.webp",
-      "/images/case-studies/box55-reservation.webp",
+      { src: "/images/case-studies/box55-hero.webp", alt: "The public home page" },
+      {
+        src: "/images/case-studies/box55-dashboard.webp",
+        alt: "The staff dashboard",
+      },
+      {
+        src: "/images/case-studies/box55-active-listings.webp",
+        alt: "Active listings in the dashboard",
+      },
+      {
+        src: "/images/case-studies/box55-reservation.webp",
+        alt: "A single reservation in the ledger",
+      },
     ],
     liveUrl: "https://box55enugu.com/",
     tools: ["ASTRO", "REACT", "TAILWIND CSS", "SUPABASE", "PAYSTACK", "VERCEL"],
@@ -187,14 +219,56 @@ export const projects: Project[] = [
     description:
       "A home services marketplace where customers, providers and admins each get their own app. Underneath is an escrow ledger, so money only moves once a job is actually finished.",
     image: "/images/case-studies/azap-hero.png",
+    // Ordered to follow the write-up: customer flow, then provider flow, then
+    // the money. AZAP is the one project a reader can't go and try, so it
+    // carries a fuller gallery than the others.
+    //
+    // All eight come from Azap-screens/, which are raw 1170x2532 captures with
+    // no bezel; the frame is drawn in CSS. The loose azap-*.webp files in the
+    // parent folder are the same screens with a phone already baked in, so
+    // mixing the two sets would give some images two frames and others one.
+    // NOTE: these filenames are case sensitive on Vercel but not on macOS.
     gallery: [
-      "/images/case-studies/azap-explore.webp",
-      "/images/case-studies/azap-urgent.webp",
-      "/images/case-studies/azap-earnings.webp",
-      "/images/case-studies/azap-mentorship.webp",
+      {
+        src: "/images/case-studies/Azap-screens/Azap-Explore.webp",
+        alt: "The customer explore screen, listing nearby providers with ratings and call out fees",
+      },
+      {
+        src: "/images/case-studies/Azap-screens/Azap-urgent.webp",
+        alt: "Requesting an urgent, same day job",
+      },
+      {
+        src: "/images/case-studies/Azap-screens/Azap-schedule.webp",
+        alt: "Scheduling a job for a later date",
+      },
+      {
+        src: "/images/case-studies/Azap-screens/Azap-provider-home.webp",
+        alt: "The provider side of the app, which is a different product to the customer's",
+      },
+      {
+        src: "/images/case-studies/Azap-screens/Azap-jobs.webp",
+        alt: "A provider's job feed",
+      },
+      {
+        src: "/images/case-studies/Azap-screens/Azap-Ledger.webp",
+        alt: "The provider ledger, showing held escrow, disputed funds and secured pay as separate balances",
+      },
+      {
+        src: "/images/case-studies/Azap-screens/Azap-receipt.webp",
+        alt: "A receipt for a completed booking",
+      },
+      {
+        src: "/images/case-studies/Azap-screens/Azap-earnings.webp",
+        alt: "A provider's earnings summary",
+      },
     ],
-    galleryAspect: "aspect-[9/16]",
+    // True ratio of the raw captures. Anything else crops them.
+    galleryAspect: "aspect-[1170/2532]",
+    galleryFrame: "phone",
     liveUrl: "https://www.getazap.com/",
+    // The app itself isn't public yet; this is the company landing page, so
+    // "VISIT LIVE SITE" would contradict the status a few pixels above it.
+    liveLabel: "VISIT GETAZAP.COM",
     tools: [
       "REACT NATIVE",
       "EXPO",
@@ -206,7 +280,7 @@ export const projects: Project[] = [
     caseStudy:
       "AZAP is a marketplace for home services, booked on demand. A customer requests a job, a provider nearby accepts it, and the two of them chat and track each other on a map until it's finished. Some jobs are urgent and same day, others are booked ahead. The interesting part isn't the booking screen though. It's that customers, providers and admins are three different products sharing one Expo codebase and one Postgres database, and that money has to move between people who have never met.",
     study: {
-      role: "Co-founder, design and build",
+      role: "Co-founder and CTO",
       timeline: "April to July 2026",
       status: "Not launched yet, running on sandbox payment keys",
       problem: [
@@ -262,10 +336,22 @@ export const projects: Project[] = [
       "The website for a luxury travel company, built so that browsing feels like the thing it sells. Twelve destinations and no backend at all.",
     image: "/images/case-studies/highend-escapes-hero.webp",
     gallery: [
-      "/images/case-studies/highend-escapes-hero.webp",
-      "/images/case-studies/highend-escapes-destination.webp",
-      "/images/case-studies/highend-escapes-destination-pick.webp",
-      "/images/case-studies/highend-escapes-reservation.webp",
+      {
+        src: "/images/case-studies/highend-escapes-hero.webp",
+        alt: "The home page hero carousel",
+      },
+      {
+        src: "/images/case-studies/highend-escapes-destination.webp",
+        alt: "Browsing the twelve destinations",
+      },
+      {
+        src: "/images/case-studies/highend-escapes-destination-pick.webp",
+        alt: "A single destination",
+      },
+      {
+        src: "/images/case-studies/highend-escapes-reservation.webp",
+        alt: "The enquiry form, with its budget and trip length sliders",
+      },
     ],
     liveUrl: "https://www.bookhighendescapes.com/",
     tools: ["REACT", "VITE", "FRAMER MOTION", "REACT ROUTER"],

@@ -44,7 +44,7 @@ function StackCard({
         <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-white/5">
           <Image
             src={project.image}
-            alt={project.title}
+            alt=""
             fill
             sizes="(min-width: 640px) 50vw, 100vw"
             className="object-cover"

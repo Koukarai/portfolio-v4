@@ -8,29 +8,34 @@ export default function ProjectCard({ project }: { project: Project }) {
     <Reveal>
       <Link
         href={`/work/${project.slug}`}
-        className="group flex items-center gap-5 border-b border-border py-6"
+        className="group grid gap-5 border-b border-border py-8 sm:grid-cols-[auto_1fr_auto] sm:items-start"
       >
-        <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-white/5 sm:h-20 sm:w-20">
+        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-white/5 sm:h-28 sm:w-28">
           <Image
             src={project.image}
-            alt={project.title}
+            alt=""
             fill
-            sizes="(min-width: 640px) 80px, 64px"
+            sizes="(min-width: 640px) 112px, 80px"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         </div>
 
-        <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-xs text-accent">
-              ({project.index})
-            </span>
-            <h3 className="text-xl font-medium tracking-tight transition-colors group-hover:text-accent sm:text-2xl">
-              {project.title}
-            </h3>
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-center gap-3 font-mono text-xs tracking-widest text-muted">
+            <span className="text-accent">({project.index})</span>
+            <span>{project.category}</span>
+            <span>{project.year}</span>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          <h3 className="text-xl font-medium tracking-tight transition-colors group-hover:text-accent sm:text-2xl">
+            {project.title}
+          </h3>
+
+          <p className="max-w-2xl leading-relaxed text-muted">
+            {project.description}
+          </p>
+
+          <div className="mt-1 flex flex-wrap gap-2">
             {project.tools.map((tool) => (
               <span
                 key={tool}
@@ -42,7 +47,10 @@ export default function ProjectCard({ project }: { project: Project }) {
           </div>
         </div>
 
-        <span className="hidden shrink-0 font-mono text-accent transition-transform group-hover:translate-x-1 sm:block">
+        <span
+          aria-hidden
+          className="hidden shrink-0 self-center font-mono text-accent transition-transform group-hover:translate-x-1 sm:block"
+        >
           →
         </span>
       </Link>

@@ -87,7 +87,7 @@ export default async function ProjectPage({
             rel="noopener noreferrer"
             className="group mt-6 inline-flex items-center gap-3 rounded-full border border-border px-6 py-3 font-mono text-xs tracking-widest transition-colors hover:border-accent hover:text-accent"
           >
-            VISIT LIVE SITE
+            {project.liveLabel ?? "VISIT LIVE SITE"}
             <span className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1">
               ↗
             </span>
@@ -114,7 +114,7 @@ export default async function ProjectPage({
         <div className="relative mt-10 aspect-video overflow-hidden rounded-2xl bg-white/5">
           <Image
             src={project.image}
-            alt={project.title}
+            alt=""
             fill
             priority
             sizes="(min-width: 1280px) calc(100vw - 12rem), (min-width: 1024px) calc(100vw - 8rem), (min-width: 640px) calc(100vw - 5rem), calc(100vw - 3rem)"
@@ -150,8 +150,8 @@ export default async function ProjectPage({
 
       <Gallery
         images={project.gallery}
-        title={project.title}
         aspect={project.galleryAspect}
+        frame={project.galleryFrame}
       />
 
       {study && hasNarrative && (
