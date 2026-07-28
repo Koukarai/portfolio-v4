@@ -18,7 +18,22 @@ export async function generateMetadata({
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
   if (!project) return {};
-  return { title: `${project.title} | Terrence` };
+
+  const title = `${project.title} | Terrence`;
+  return {
+    title,
+    description: project.description,
+    alternates: { canonical: `/work/${project.slug}` },
+    // Without these a shared case study link falls back to the site-wide card,
+    // so all three projects preview identically.
+    openGraph: {
+      title,
+      description: project.description,
+      url: `/work/${project.slug}`,
+      type: "article",
+      images: [{ url: project.image, alt: project.title }],
+    },
+  };
 }
 
 export default async function ProjectPage({
