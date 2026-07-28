@@ -18,7 +18,7 @@ export const site = {
    * that earns the click instead of repeating the pitch.
    */
   aboutTeaser:
-    "I spent years as a database administrator before I built anything anyone could actually see. It still shows in how I work.",
+    "I came up through databases rather than design. It was years before I built anything with a screen on it, and I still start from the data and work up.",
   quote:
     "“I'd rather ship one thing that's finished than three that are nearly finished. A screenshot can look great while the thing behind it falls over.”",
   ctaLead: "GOT A PROJECT",
@@ -113,11 +113,11 @@ export const projects: Project[] = [
   {
     slug: "box55",
     index: "01",
-    category: "FULL-STACK DEVELOPMENT",
+    category: "FULL STACK DEVELOPMENT",
     year: "2026",
     title: "BOX 55",
     description:
-      "A booking site for a shortlet operator in Enugu. Guests see live availability and book instantly. Staff run the rest of the operation from a dashboard behind it.",
+      "A booking site for a shortlet operator in Enugu. Guests see live availability and book instantly, and staff run everything else from the dashboard behind it.",
     image: "/images/case-studies/box55-hero.webp",
     gallery: [
       "/images/case-studies/box55-hero.webp",
@@ -142,7 +142,7 @@ export const projects: Project[] = [
           heading: "Taking the money seriously",
           body: [
             "The booking endpoint is the part I'd point at if someone asked what I actually do. It treats every request as a lie until proven otherwise.",
-            "It recalculates the rate from the database instead of accepting the total the browser sent. It looks up the unit's nightly rate, works out the nights between check in and check out, applies the five percent long stay discount when a booking runs five nights or more, then adds the ₦50,000 caution fee. It calls Paystack to confirm the payment reference is real, that it succeeded, that it was in naira, and that the amount matches to the kobo. It checks that reference hasn't already been used on another reservation. It re-checks the unit's availability at the moment of payment rather than trusting what the guest saw on screen a minute earlier. Only then does it write a row, and it writes an explicit list of fields rather than spreading whatever JSON arrived.",
+            "It recalculates the rate from the database instead of accepting the total the browser sent. It looks up the unit's nightly rate, works out the nights between check in and check out, applies the five percent long stay discount when a booking runs five nights or more, then adds the ₦50,000 caution fee. It calls Paystack to confirm the payment reference is real, that it succeeded, that it was in naira, and that the amount matches to the kobo. It checks that reference hasn't already been used on another reservation. It checks the unit's availability again at the moment of payment rather than trusting what the guest saw on screen a minute earlier. Only then does it write a row, and it writes an explicit list of fields rather than spreading whatever JSON arrived.",
             "There's a rate limit on it too, three attempts per IP every fifteen minutes, because a public booking form wired to a payment provider will get poked at.",
           ],
         },
@@ -185,7 +185,7 @@ export const projects: Project[] = [
     year: "2026",
     title: "AZAP",
     description:
-      "An on-demand home services marketplace. Customer app, provider app and admin console in one codebase, with escrow, live tracking and an SOS button behind them.",
+      "A home services marketplace where customers, providers and admins each get their own app. Underneath is an escrow ledger, so money only moves once a job is actually finished.",
     image: "/images/case-studies/azap-hero.png",
     gallery: [
       "/images/case-studies/azap-explore.webp",
@@ -204,11 +204,11 @@ export const projects: Project[] = [
       "PAYSTACK",
     ],
     caseStudy:
-      "AZAP is an on-demand marketplace for home services. A customer requests a job, a provider nearby accepts it, and the two of them chat and track each other on a map until it's finished. Some jobs are urgent and same day, others are booked ahead. The interesting part isn't the booking screen though. It's that customers, providers and admins are three different products sharing one Expo codebase and one Postgres database, and that money has to move between people who have never met.",
+      "AZAP is a marketplace for home services, booked on demand. A customer requests a job, a provider nearby accepts it, and the two of them chat and track each other on a map until it's finished. Some jobs are urgent and same day, others are booked ahead. The interesting part isn't the booking screen though. It's that customers, providers and admins are three different products sharing one Expo codebase and one Postgres database, and that money has to move between people who have never met.",
     study: {
       role: "Co-founder, design and build",
       timeline: "April to July 2026",
-      status: "Pre-launch, running on sandbox payment keys",
+      status: "Not launched yet, running on sandbox payment keys",
       problem: [
         "A marketplace like this has to solve three problems at once that have very little to do with each other. Strangers have to find each other. Money has to move without either side being able to cheat. And somebody has to be able to step in when it goes wrong.",
       ],
@@ -259,7 +259,7 @@ export const projects: Project[] = [
     year: "2026",
     title: "HIGHEND ESCAPES",
     description:
-      "A concept travel site built to see how far motion design alone can carry a luxury brand. Twelve destinations, an enquiry flow, and a lot of Framer Motion.",
+      "A concept travel site built to see how far motion design alone can carry a luxury brand. Twelve destinations and no backend at all.",
     image: "/images/case-studies/highend-escapes-hero.webp",
     gallery: [
       "/images/case-studies/highend-escapes-hero.webp",
@@ -272,7 +272,7 @@ export const projects: Project[] = [
     // Rail only, no narrative. It's a self-directed craft piece; the gallery is
     // the argument, and a process write-up would be padding.
     study: {
-      role: "Self-directed concept",
+      role: "Personal project, design and build",
       timeline: "Two weeks, February 2026",
       status: "Live at bookhighendescapes.com",
     },
