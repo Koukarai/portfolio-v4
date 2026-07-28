@@ -124,9 +124,8 @@ export type Project = {
    * anything with a frame already baked in would come out double framed.
    */
   galleryFrame?: "phone";
+  /** The button label is derived from this host, so no separate label field. */
   liveUrl?: string;
-  /** Defaults to "VISIT LIVE SITE". Override where that would overstate it. */
-  liveLabel?: string;
   tools: string[];
   caseStudy: string;
   study?: Study;
@@ -266,9 +265,6 @@ export const projects: Project[] = [
     galleryAspect: "aspect-[1170/2532]",
     galleryFrame: "phone",
     liveUrl: "https://www.getazap.com/",
-    // The app itself isn't public yet; this is the company landing page, so
-    // "VISIT LIVE SITE" would contradict the status a few pixels above it.
-    liveLabel: "VISIT GETAZAP.COM",
     tools: [
       "REACT NATIVE",
       "EXPO",

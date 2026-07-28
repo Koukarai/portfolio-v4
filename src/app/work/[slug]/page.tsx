@@ -51,6 +51,13 @@ export default async function ProjectPage({
     study?.problem?.length || study?.sections?.length,
   );
 
+  // Label the button with the domain rather than "VISIT LIVE SITE". It reads
+  // consistently across projects and, for the one that hasn't launched, it
+  // says where the link goes instead of promising a running product.
+  const liveHost = project.liveUrl
+    ? new URL(project.liveUrl).host.replace(/^www\./, "").toUpperCase()
+    : null;
+
   return (
     <section className="px-6 py-24 sm:px-10 lg:px-16 xl:px-24">
       <Reveal>
@@ -87,7 +94,7 @@ export default async function ProjectPage({
             rel="noopener noreferrer"
             className="group mt-6 inline-flex items-center gap-3 rounded-full border border-border px-6 py-3 font-mono text-xs tracking-widest transition-colors hover:border-accent hover:text-accent"
           >
-            {project.liveLabel ?? "VISIT LIVE SITE"}
+            VISIT {liveHost}
             <span className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1">
               ↗
             </span>
