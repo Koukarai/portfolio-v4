@@ -1,20 +1,16 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
 import { Service } from "@/data/content";
 
 export default function ServiceCard({ service }: { service: Service }) {
-  const [hovered, setHovered] = useState(false);
-  const arrow = service.direction === "left" ? "←" : "→";
+  const left = service.direction === "left";
 
   return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="group flex flex-col justify-between border-b border-border py-10 sm:flex-row sm:items-center"
+    <Link
+      href="/contact"
+      aria-label={`Get in touch about ${service.title.toLowerCase()}`}
+      className="group flex flex-col justify-between border-b border-border py-10 transition-colors hover:border-accent focus-visible:border-accent focus-visible:outline-none sm:flex-row sm:items-center"
     >
-      <h3 className="text-2xl font-medium tracking-tight sm:text-3xl">
+      <h3 className="text-2xl font-medium tracking-tight transition-colors group-hover:text-accent group-focus-visible:text-accent sm:text-3xl">
         {service.title}
       </h3>
 
@@ -24,19 +20,18 @@ export default function ServiceCard({ service }: { service: Service }) {
             <span key={tag}>{tag}</span>
           ))}
         </div>
-        <Link
-          href="/contact"
+        {/* Decorative: the link's aria-label already carries the destination. */}
+        <span
+          aria-hidden
           className={`font-mono text-sm text-accent transition-transform duration-300 ${
-            hovered
-              ? service.direction === "left"
-                ? "-translate-x-2"
-                : "translate-x-2"
-              : ""
+            left
+              ? "group-hover:-translate-x-2 group-focus-visible:-translate-x-2"
+              : "group-hover:translate-x-2 group-focus-visible:translate-x-2"
           }`}
         >
-          {service.direction === "left" ? `${arrow} click me` : `click me ${arrow}`}
-        </Link>
+          {left ? "←" : "→"}
+        </span>
       </div>
-    </div>
+    </Link>
   );
 }

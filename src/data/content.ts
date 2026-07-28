@@ -311,25 +311,30 @@ export type Service = {
   direction: "left" | "right";
 };
 
+/**
+ * Kept deliberately close to what the case studies can actually evidence.
+ * Every tag below maps to something shipped in Box 55, AZAP or Highend
+ * Escapes; nothing here is aspirational.
+ */
 export const services: Service[] = [
   {
-    title: "ART DIRECTION",
-    tags: ["VISUAL STRATEGY", "CREATIVE CONCEPT", "ART SUPERVISION", "BRAND STORYTELLING"],
+    title: "FULL STACK BUILDS",
+    tags: ["NEXT.JS & REACT", "ASTRO", "TYPESCRIPT", "AUTH & PAYMENTS"],
     direction: "left",
   },
   {
-    title: "BRANDING",
-    tags: ["BRAND IDENTITY", "LOGO DESIGN", "VISUAL LANGUAGE", "STYLE GUIDE"],
+    title: "MOBILE APPS",
+    tags: ["REACT NATIVE", "EXPO", "PUSH NOTIFICATIONS", "LIVE LOCATION"],
     direction: "right",
   },
   {
-    title: "DIGITAL DESIGN",
-    tags: ["UI/UX DESIGN", "PROTOTYPING", "DESIGN SYSTEMS", "INTERACTION DESIGN"],
+    title: "DATABASE DESIGN",
+    tags: ["POSTGRES", "SUPABASE", "ROW LEVEL SECURITY", "MIGRATIONS & LEDGERS"],
     direction: "left",
   },
   {
-    title: "DEVELOPMENT",
-    tags: ["FRONTEND DEVELOPMENT", "REACT / NEXT.JS", "MOTION & INTERACTIONS", "RESPONSIVE DESIGN"],
+    title: "INTERFACE & MOTION",
+    tags: ["UI DESIGN", "FRAMER MOTION", "PAGE TRANSITIONS", "SCROLL INTERACTIONS"],
     direction: "right",
   },
 ];
