@@ -50,6 +50,7 @@ export const about = {
   story: [
     "I came into tech sideways. My first job was designing marketing material and managing property listings for a real estate group. After that I spent years as a database administrator at a hearing clinic, mostly writing queries and keeping patient records locked down, plus the internal dashboards the staff ran the place on.",
     "At some point I got tired of only owning the data layer. I wanted to build the thing sitting on top of it too, so I taught myself frontend and kept going until I could ship a whole product on my own. Interface, auth, payments, the admin screens nobody sees.",
+    "Twice now I've finished building something and then gone back through it looking for ways in. On AZAP I found a policy that let any user make themselves an admin by editing their own profile. Four days later I did the same on Box 55, which was already live and taking real payments, and found a booking endpoint that trusted whatever price the browser sent it. Nobody had reported either one. I went looking because nobody else was going to, and because the alternative is hearing about it from a customer.",
   ],
   workingStyle:
     "On everything I've shipped so far I've been the only engineer, and I work slowly on purpose. I'd rather spend an extra week on auth and the edge cases than hand something over that demos well and then breaks the first time two people use it at once.",

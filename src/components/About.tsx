@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import { about, site } from "@/data/content";
@@ -32,11 +33,13 @@ export default function About() {
           </Reveal>
 
           <Reveal delay={0.25}>
+            {/* Secondary to GET IN TOUCH at the foot of the page, so it takes
+                the plain treatment rather than a competing pill. */}
             <a
               href={about.resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group mt-10 inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 font-mono text-xs tracking-widest transition-colors hover:border-accent hover:text-accent"
+              className="group mt-10 inline-flex items-center gap-2 font-mono text-xs tracking-widest text-muted transition-colors hover:text-accent"
             >
               DOWNLOAD RESUME
               <span className="transition-transform group-hover:translate-y-0.5">
@@ -94,6 +97,18 @@ export default function About() {
           </div>
         </Reveal>
       </div>
+
+      <Reveal delay={0.1}>
+        <Link
+          href="/contact"
+          className="group mt-16 inline-flex items-center gap-3 rounded-full border border-border px-6 py-3 font-mono text-xs tracking-widest transition-colors hover:border-accent hover:text-accent"
+        >
+          GET IN TOUCH
+          <span className="transition-transform group-hover:translate-x-1">
+            →
+          </span>
+        </Link>
+      </Reveal>
     </section>
   );
 }
