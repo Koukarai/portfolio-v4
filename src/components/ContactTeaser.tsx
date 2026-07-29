@@ -17,9 +17,9 @@ export default function ContactTeaser() {
       <Reveal delay={0.1}>
         <p className="mt-8 max-w-md text-muted">{site.ctaBody}</p>
       </Reveal>
-      {/* Reveal, not MaskReveal: that one's resting state is fully clipped by
-          overflow-hidden, so a missed trigger leaves the CTA permanently
-          invisible. Reveal fades from opacity 0 and is proven on this page. */}
+      {/* Reveal rather than a mask wipe: a wipe's resting state is clipped by
+          overflow-hidden rather than faded, so a missed trigger leaves the CTA
+          permanently invisible. That cost us this link once already. */}
       <Reveal delay={0.15} className="mt-10">
         <Link
           href="/contact"
