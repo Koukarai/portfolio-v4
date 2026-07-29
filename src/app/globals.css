@@ -7,6 +7,9 @@
   --muted: #8a8a86;
   --accent: #c9ff3c;
   --border: rgba(242, 242, 240, 0.12);
+  /* 5.26:1 on this background. Tailwind's red-500 only clears AA on the dark
+     theme, so the danger colour is tokenised per theme rather than hardcoded. */
+  --danger: #ef4444;
 }
 
 .light {
@@ -15,6 +18,8 @@
   --muted: #6b6b67;
   --accent: #189d4f;
   --border: rgba(10, 10, 10, 0.1);
+  /* red-500 is only 3.36:1 here, which fails AA. red-700 gives 5.77:1. */
+  --danger: #b91c1c;
 }
 
 @theme inline {
@@ -23,6 +28,7 @@
   --color-muted: var(--muted);
   --color-accent: var(--accent);
   --color-border: var(--border);
+  --color-danger: var(--danger);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
 }

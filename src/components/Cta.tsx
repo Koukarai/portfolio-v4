@@ -9,13 +9,13 @@ export default function Cta() {
       <SectionHeading index="04" title="START A PROJECT" />
       <Reveal>
         <h2 className="text-[clamp(2.5rem,8vw,6rem)] font-medium leading-[0.95] tracking-tight">
-          {site.ctaLead}
+          {site.contactLead}
           <br />
-          <span className="text-accent">{site.ctaHighlight}</span>
+          <span className="text-accent">{site.contactHighlight}</span>
         </h2>
       </Reveal>
       <Reveal delay={0.1}>
-        <p className="mt-8 max-w-md text-muted">{site.ctaBody}</p>
+        <p className="mt-8 max-w-md text-muted">{site.contactBody}</p>
       </Reveal>
       <Reveal delay={0.15}>
         <ContactForm />

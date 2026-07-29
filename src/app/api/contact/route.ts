@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { site } from "@/data/content";
+import { site, timelineOptions } from "@/data/content";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -84,7 +84,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { name, email, message, website } = (body ?? {}) as Record<
+  const { name, email, message, timeline, website } = (body ?? {}) as Record<
     string,
     unknown
   >;
@@ -124,6 +124,19 @@ export async function POST(request: Request) {
     );
   }
 
+  // Optional, but if present it has to be one of the values the form offers.
+  // Never interpolate an arbitrary client string into the email body.
+  const timelineValue = typeof timeline === "string" ? timeline.trim() : "";
+  if (
+    timelineValue &&
+    !(timelineOptions as readonly string[]).includes(timelineValue)
+  ) {
+    return NextResponse.json(
+      { error: "Please choose one of the listed timelines." },
+      { status: 400 },
+    );
+  }
+
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.error("RESEND_API_KEY is not set");
@@ -140,7 +153,12 @@ export async function POST(request: Request) {
     to: site.email,
     replyTo: email.trim(),
     subject: `Project inquiry from ${name.trim()}`,
-    text: `${message.trim()}\n\nFrom: ${name.trim()} (${email.trim()})`,
+    text: [
+      message.trim(),
+      "",
+      `From: ${name.trim()} (${email.trim()})`,
+      `Timeline: ${timelineValue || "Not specified"}`,
+    ].join("\n"),
   });
 
   if (error) {

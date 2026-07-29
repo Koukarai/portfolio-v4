@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { timelineOptions } from "@/data/content";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -10,32 +11,57 @@ const MAX_EMAIL_LENGTH = 254;
 const MAX_MESSAGE_LENGTH = 5000;
 
 type Status = "idle" | "submitting" | "sent" | "error";
+/** Which field the current error belongs to, if any. Server errors have none. */
+type ErrorField = "name" | "email" | "message" | null;
+
+const ERROR_ID = "contact-form-error";
 
 export default function ContactForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [timeline, setTimeline] = useState("");
   // Honeypot. Real users never see this, so a filled value means a bot.
   const [website, setWebsite] = useState("");
   const [error, setError] = useState("");
+  const [errorField, setErrorField] = useState<ErrorField>(null);
   const [status, setStatus] = useState<Status>("idle");
+
+  /** Marks the offending input so screen readers hear which one to fix. */
+  function fieldProps(field: Exclude<ErrorField, null>) {
+    const invalid = status === "error" && errorField === field;
+    return {
+      "aria-invalid": invalid || undefined,
+      "aria-describedby": invalid ? ERROR_ID : undefined,
+    };
+  }
+
+  function fail(messageText: string, field: ErrorField = null) {
+    setError(messageText);
+    setErrorField(field);
+    setStatus("error");
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     if (!name.trim() || !email.trim() || !message.trim()) {
-      setError("Please fill in every field.");
-      setStatus("error");
+      const firstEmpty: ErrorField = !name.trim()
+        ? "name"
+        : !email.trim()
+          ? "email"
+          : "message";
+      fail("Please fill in every field.", firstEmpty);
       return;
     }
 
     if (!EMAIL_PATTERN.test(email.trim())) {
-      setError("Please enter a valid email address.");
-      setStatus("error");
+      fail("Please enter a valid email address.", "email");
       return;
     }
 
     setError("");
+    setErrorField(null);
     setStatus("submitting");
 
     try {
@@ -46,6 +72,7 @@ export default function ContactForm() {
           name: name.trim(),
           email: email.trim(),
           message: message.trim(),
+          timeline,
           website,
         }),
       });
@@ -53,8 +80,7 @@ export default function ContactForm() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Something went wrong. Please try again.");
-        setStatus("error");
+        fail(data.error || "Something went wrong. Please try again.");
         return;
       }
 
@@ -62,10 +88,10 @@ export default function ContactForm() {
       setName("");
       setEmail("");
       setMessage("");
+      setTimeline("");
       setWebsite("");
     } catch {
-      setError("Something went wrong. Please try again.");
-      setStatus("error");
+      fail("Something went wrong. Please try again.");
     }
   }
 
@@ -82,6 +108,7 @@ export default function ContactForm() {
           id="name"
           name="name"
           autoComplete="name"
+          {...fieldProps("name")}
           maxLength={MAX_NAME_LENGTH}
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -102,12 +129,44 @@ export default function ContactForm() {
           name="email"
           type="email"
           autoComplete="email"
+          {...fieldProps("email")}
           maxLength={MAX_EMAIL_LENGTH}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="border-b border-border bg-transparent py-2 text-lg outline-none transition-colors focus:border-accent"
           placeholder="you@example.com"
         />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label
+          htmlFor="timeline"
+          className="font-mono text-xs tracking-widest text-muted"
+        >
+          TIMELINE <span className="opacity-60">(OPTIONAL)</span>
+        </label>
+        <select
+          id="timeline"
+          name="timeline"
+          value={timeline}
+          onChange={(e) => setTimeline(e.target.value)}
+          className="border-b border-border bg-transparent py-2 text-lg outline-none transition-colors focus:border-accent"
+        >
+          {/* Options carry an explicit background because a transparent select
+              renders them unreadable against the dark theme on some browsers. */}
+          <option value="" className="bg-background text-foreground">
+            No preference
+          </option>
+          {timelineOptions.map((option) => (
+            <option
+              key={option}
+              value={option}
+              className="bg-background text-foreground"
+            >
+              {option}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="flex flex-col gap-2">
@@ -120,6 +179,7 @@ export default function ContactForm() {
         <textarea
           id="message"
           name="message"
+          {...fieldProps("message")}
           rows={5}
           maxLength={MAX_MESSAGE_LENGTH}
           value={message}
@@ -147,12 +207,20 @@ export default function ContactForm() {
         />
       </div>
 
-      {status === "error" && <p className="text-sm text-red-500">{error}</p>}
-      {status === "sent" && (
-        <p className="text-sm text-accent">
-          Message sent. I&apos;ll get back to you soon.
-        </p>
-      )}
+      {/* Always in the DOM so a screen reader announces the change. An element
+          that only appears on submit is easily missed. */}
+      <div aria-live="polite" aria-atomic="true" className="min-h-5">
+        {status === "error" && (
+          <p id={ERROR_ID} className="text-sm text-danger">
+            {error}
+          </p>
+        )}
+        {status === "sent" && (
+          <p className="text-sm text-accent">
+            Message sent. I&apos;ll get back to you soon.
+          </p>
+        )}
+      </div>
 
       <button
         type="submit"

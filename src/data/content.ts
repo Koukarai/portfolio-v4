@@ -21,10 +21,20 @@ export const site = {
     "I came up through databases rather than design. It was years before I built anything with a screen on it, and I still start from the data and work up.",
   quote:
     "“I'd rather ship one thing that's finished than three that are nearly finished. A screenshot can look great while the thing behind it falls over.”",
+  /** Homepage teaser. Its job is to earn the click through to /contact. */
   ctaLead: "GOT A PROJECT",
   ctaHighlight: "IN MIND?",
   ctaBody:
     "I'm taking on new projects. Tell me what you're building and we'll see if it's a fit.",
+  /**
+   * The /contact page itself. Deliberately different from the teaser above:
+   * arriving here means the decision is already made, so this says what happens
+   * next rather than repeating the pitch the visitor just read.
+   */
+  contactLead: "TELL ME WHAT",
+  contactHighlight: "YOU'RE BUILDING",
+  contactBody:
+    "Fill this in and it lands in my inbox. If you'd rather email or call, both are under the form.",
   email: "terryokeke@gmail.com",
   phone: "+2348083080650",
   socials: [
@@ -36,6 +46,18 @@ export const site = {
     { label: "INSTAGRAM", href: "https://www.instagram.com/terrenceokeke" },
   ],
 };
+
+/**
+ * Offered on the contact form and validated against on the server, so the two
+ * can't drift. Optional on the form: an extra required field costs enquiries,
+ * and a rough timeline is only worth having if people actually answer.
+ */
+export const timelineOptions = [
+  "Under a month",
+  "1 to 3 months",
+  "3 months or more",
+  "Not sure yet",
+] as const;
 
 export const footer = {
   tagline: "Terrence is an independent developer building websites and apps.",
