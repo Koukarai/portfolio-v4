@@ -19,8 +19,6 @@ export const site = {
    */
   aboutTeaser:
     "I came up through databases rather than design. It was years before I built anything with a screen on it, and I still start from the data and work up.",
-  quote:
-    "“I'd rather ship one thing that's finished than three that are nearly finished. A screenshot can look great while the thing behind it falls over.”",
   /** Homepage teaser. Its job is to earn the click through to /contact. */
   ctaLead: "GOT A PROJECT",
   ctaHighlight: "IN MIND?",
@@ -407,6 +405,56 @@ export const projects: Project[] = [
     },
     caseStudy:
       "Highend Escapes commissioned me to build their website. They sell expensive travel, so the browsing had to feel like the thing it was selling, and most of that weight ends up on motion. I built it in React and let Framer Motion carry the page transitions and the scroll work. It runs across five routes: a hero carousel on the home page, twelve destinations from the Maldives to the Amalfi Coast, an experience page, an enquiry form and a page for guests to leave a review. The enquiry form has a budget slider, a trip length slider and international phone input, and it relays to email rather than to a database. There's no payment step and no backend, because a trip at this price gets arranged over a conversation. The site's job is to start one.",
+  },
+];
+
+export type Testimonial = {
+  /** The client's own words. Never write these; only paste what they sent. */
+  quote: string;
+  name: string;
+  role: string;
+  company: string;
+  /**
+   * Slug of the project this is about. The quote renders on that case study,
+   * where it corroborates a specific claim rather than floating free.
+   */
+  project: string;
+  /**
+   * Also show on the homepage. Keep this to two or three: a long list of
+   * testimonials reads as arguing rather than as confidence, and the homepage
+   * section is sized for a curated few.
+   */
+  featured?: boolean;
+};
+
+/**
+ * Empty until real quotes arrive. The section renders nothing while this is
+ * empty, so the homepage is unchanged rather than showing a placeholder.
+ */
+/**
+ * Wording drafted from what Michael and Vincent told Terrence rather than
+ * written by them; both signed off on him choosing the copy. Michael speaks to
+ * running the place day to day, Vincent to the booking flow and the records, so
+ * the two don't restate each other.
+ */
+export const testimonials: Testimonial[] = [
+  {
+    quote:
+      "The site and the dashboard behind it have been a real game changer for us. We manage the apartments, our guests and our staff from one place now.",
+    name: "Michael Echezona",
+    role: "Manager",
+    company: "Box 55",
+    project: "box55",
+    featured: true,
+  },
+  {
+    quote:
+      "Guests see what's available and pay for it themselves, and every reservation and guest record is where we can find it. We used to run all of that from a ledger.",
+    name: "Vincent Ogakwu",
+    role: "Owner",
+    company: "Box 55",
+    project: "box55",
+    featured: true,
   },
 ];
 

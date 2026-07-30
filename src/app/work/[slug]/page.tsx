@@ -4,7 +4,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Gallery from "@/components/Gallery";
 import Reveal from "@/components/Reveal";
-import { projects } from "@/data/content";
+import { TestimonialFigure } from "@/components/Testimonials";
+import { projects, testimonials } from "@/data/content";
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -64,6 +65,12 @@ export default async function ProjectPage({
   // would still render as an empty spacer above the prev/next nav.
   const hasNarrative = Boolean(
     study?.problem?.length || study?.sections?.length,
+  );
+
+  // Quotes about this specific project. On the page that makes the claim they
+  // corroborate, they carry more weight than they do on the homepage.
+  const projectTestimonials = testimonials.filter(
+    (testimonial) => testimonial.project === project.slug,
   );
 
   // Label the button with the domain rather than "VISIT LIVE SITE". It reads
@@ -206,6 +213,21 @@ export default async function ProjectPage({
               </section>
             </Reveal>
           ))}
+        </div>
+      )}
+
+      {projectTestimonials.length > 0 && (
+        <div className="mt-24 max-w-2xl">
+          <span className="font-mono text-xs tracking-widest text-muted">
+            FROM THE CLIENT
+          </span>
+          <div className="mt-6 flex flex-col gap-10">
+            {projectTestimonials.map((testimonial, i) => (
+              <Reveal key={testimonial.quote} delay={i * 0.05}>
+                <TestimonialFigure testimonial={testimonial} />
+              </Reveal>
+            ))}
+          </div>
         </div>
       )}
 
