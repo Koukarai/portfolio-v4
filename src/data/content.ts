@@ -406,6 +406,75 @@ export const projects: Project[] = [
     caseStudy:
       "Highend Escapes commissioned me to build their website. They sell expensive travel, so the browsing had to feel like the thing it was selling, and most of that weight ends up on motion. I built it in React and let Framer Motion carry the page transitions and the scroll work. It runs across five routes: a hero carousel on the home page, twelve destinations from the Maldives to the Amalfi Coast, an experience page, an enquiry form and a page for guests to leave a review. The enquiry form has a budget slider, a trip length slider and international phone input, and it relays to email rather than to a database. There's no payment step and no backend, because a trip at this price gets arranged over a conversation. The site's job is to start one.",
   },
+  {
+    slug: "st-peters-agro",
+    index: "04",
+    category: "FULL STACK DEVELOPMENT",
+    year: "2026",
+    title: "ST. PETER'S AGRO",
+    description:
+      "A grocery storefront for a retailer in Nigeria. Customers browse a categorised catalog and check out entirely through WhatsApp, and an admin dashboard behind it lets the client manage the whole catalog themselves.",
+    image: "/images/case-studies/st-peters-agro-hero.webp",
+    gallery: [
+      { src: "/images/case-studies/st-peters-agro-hero.webp", alt: "The home page" },
+      {
+        src: "/images/case-studies/st-peters-agro-shop.webp",
+        alt: "Browsing the live catalog",
+      },
+      {
+        src: "/images/case-studies/st-peters-agro-product.webp",
+        alt: "A single product page",
+      },
+      {
+        src: "/images/case-studies/st-peters-agro-cart.webp",
+        alt: "The cart, handing an order off to WhatsApp",
+      },
+    ],
+    liveUrl: "https://stpetersagro.com/",
+    tools: ["REACT", "TYPESCRIPT", "VITE", "TAILWIND CSS", "SUPABASE", "VERCEL"],
+    caseStudy:
+      "St. Peter's Agro sells groceries and household stock in Nigeria. I built them a storefront and an admin dashboard: customers browse a categorised catalog and place orders through WhatsApp instead of a checkout, and the client runs the entire catalog themselves from the dashboard behind it, no payment gateway, on purpose. It's live and taking real orders at stpetersagro.com, and the catalog is the client's actual stock, loaded and maintained by them, not seed data.",
+    study: {
+      role: "Commissioned, design and build",
+      timeline: "August to September 2026",
+      status: "Live at stpetersagro.com",
+      problem: [
+        "St. Peter's Agro needed to sell groceries online without becoming a full ecommerce operation. A payment gateway means PCI scope, dispute handling and reconciliation, for a business that was placing every existing sale over a phone call anyway.",
+        "The brief scoped a storefront with no payment processing: a customer fills a cart, and checkout hands off to a pre-filled WhatsApp message instead of a card form. The interesting problems ended up being the catalog itself, since the client runs it in real time and every failure mode in that dashboard reaches a real customer.",
+      ],
+      sections: [
+        {
+          heading: "The bug that told a shopper they'd made a mistake",
+          body: [
+            "The client's complaint was that browsing the catalog showed \"No products found.\" I initially explained it as the database taking a moment to load. They weren't satisfied, and they were right not to be.",
+            "The catalog page initialised its product list to an empty array, so before the first network request even returned, it rendered its empty state in full: the heading, the subtext about adjusting search keywords, a Reset Filters button. Worse, a failed fetch rendered the exact same screen, permanently, indistinguishable from an empty catalog. If their free-tier database had ever been asleep, they'd have been looking at a genuinely broken site while being told it was a loading blip.",
+            "The fix is the three states every data view should have: skeleton cards while loading so nothing reflows when the data lands, a distinct error panel with a retry button, and an empty state that tells a filtered search apart from a genuinely empty catalog. It's a standing rule I apply everywhere now, not just here.",
+          ],
+        },
+        {
+          heading: "A rename that would have silently deleted pricing",
+          body: [
+            "Found on the same pass, more severe, and still live in the dashboard at the time: renaming a category read every product without its wholesale unit pricing attached, then wrote each one back with that pricing set to empty. Renaming one large category would have deleted carton pricing on dozens of products, no warning, no undo.",
+            "The type's own docstring promised the opposite: omit the field, leave existing pricing untouched. The code just didn't honour its own contract. Fixed by making the update only touch pricing when it's explicitly passed, and turning the rename into a single bulk update instead of a read-modify-write loop over every product in the category.",
+          ],
+        },
+        {
+          heading: "Why WhatsApp instead of a checkout",
+          body: [
+            "No payment gateway was a deliberate scope decision, not a missing feature. The business's actual relationship with customers is a phone call, and a cart that ends in a pre-filled WhatsApp message keeps that relationship instead of routing around it. It also means the business never holds card data and never has to reconcile a payment provider's payout schedule against their own books.",
+            "The tradeoff is real: the cart doesn't survive a reload, since the handoff necessarily takes the customer out of the tab. That's an accepted cost, not an oversight.",
+          ],
+        },
+        {
+          heading: "The catalog is the client's, not seed data",
+          body: [
+            "The client manages their own stock through the admin dashboard, including separate wholesale and carton pricing on top of the retail price: their real trade price book, which is why the rename bug above mattered the moment it was found.",
+            "A daily cron keeps the free-tier database from pausing on inactivity, so the client never has to think about uptime, and a quiet status indicator on the dashboard, invisible unless something needs attention, is the only sign any of it exists.",
+          ],
+        },
+      ],
+    },
+  },
 ];
 
 export type Testimonial = {
