@@ -75,6 +75,16 @@ correctly.
 `portfolio-v4` — a local directory rename doesn't touch either, so there was
 nothing to update.
 
+**Post-merge sweep.** Terrence asked to check the rest of the site for anything
+else that needed updating now that there's a fourth project. `sitemap.ts` maps
+over `projects` with no hardcoded count, so it needed nothing. Two spots did:
+the `/about` and `/work` page `<meta description>`s both still named only the
+original three projects by name, and a comment in `/work/[slug]/page.tsx`
+referenced "all three projects." Fixed all three, committed separately
+(`fc0d56d`). Checked `Services.tsx`, `Footer.tsx`, `/contact`, `/services` and
+the root layout/OG-image metadata too — nothing else references specific
+projects or a project count.
+
 **Left open:** no admin-dashboard screenshot for the new case study, since
 Claude doesn't have (and shouldn't be given) the admin login. If Terrence wants
 one to match Box 55's dashboard shots, he'd need to supply it or grant
