@@ -26,7 +26,7 @@ export async function generateMetadata({
     description: project.description,
     alternates: { canonical: `/work/${project.slug}` },
     // Without these a shared case study link falls back to the site-wide card,
-    // so all three projects preview identically.
+    // so every project previews identically.
     openGraph: {
       title,
       description: project.description,
